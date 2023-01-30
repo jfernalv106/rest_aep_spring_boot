@@ -8,10 +8,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.model.Bl;
 import com.example.model.Cliente;
 import com.example.service.ClienteService;
 
@@ -33,6 +36,19 @@ public class ClienteController {
 			}
 
 			return new ResponseEntity<>(clientes, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PostMapping("/cliente")
+	public ResponseEntity<Cliente> createBl(@RequestBody Cliente cliente) {
+		try {
+			cliente.getDirecciones().forEach((d)->{
+				d.setCliente(cliente);
+			});
+			clienteService.guardar(cliente);
+			return new ResponseEntity<>(cliente, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
