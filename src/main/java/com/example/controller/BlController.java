@@ -26,7 +26,7 @@ public class BlController {
 	BlService blService;
 
 	@GetMapping("/bls")
-	public ResponseEntity<List<Bl>> getBlByManifiesto(@RequestParam String manifiesto) {
+	public ResponseEntity<List<Bl>> getBlByManifiesto(@RequestParam(required = true) String manifiesto) {
 		List<Bl> bls = new ArrayList<Bl>();
 		try {
 			blService.listaBlsByManifiesto(manifiesto).forEach(bls::add);
